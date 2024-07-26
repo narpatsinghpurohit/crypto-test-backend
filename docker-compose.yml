@@ -1,0 +1,33 @@
+services:
+  mongo:
+    image: mongo
+    restart: always
+    env_file:
+      - .env
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${DB_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${DB_PASSWORD}
+    ports:
+      - ${DB_PORT}:27017
+    volumes:
+      - ./db-data:/data/db
+    networks:
+      - app-network
+
+  # nest: issue with bcrypt in container, working in local, need to check
+  #   build: .
+  #   env_file:
+  #     - .env
+  #   ports:
+  #     - "${APP_PORT}:${APP_PORT}"
+  #   volumes:
+  #     - ./:/app
+  #   depends_on:
+  #     - mongo
+  #   networks:
+  #     - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
